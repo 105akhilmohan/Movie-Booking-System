@@ -1,19 +1,21 @@
 
 <?php
 session_start();
-if(!isset($_SESSION['admin']))
+if(!isset($_SESSION['theatre']))
 {
   header('location:../index.php');
 }
 date_default_timezone_set('Asia/Kolkata');
 include('../../config.php');
+$th=mysqli_query($con,"select * from tbl_theatre where id='".$_SESSION['theatre']."'");
+$theatre=mysqli_fetch_array($th);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin | Admin</title>
+  <title>Theatre Assistance</title>
   <!-- valodation -->
   <script type="text/javascript" src="../validation/vendor/jquery/jquery-1.10.2.min.js"></script>
   <link rel="stylesheet" href="../validation/dist/css/bootstrapValidator.css"/> 
@@ -49,7 +51,7 @@ include('../../config.php');
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b></span>
+      <span class="logo-lg"><b>Theatre</b> Assistant</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -66,16 +68,16 @@ include('../../config.php');
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="admin.png" class="user-image" alt="User Image">
-              <span class="hidden-xs">Admin</span>
+              <img src="cinema-512.png" class="user-image" alt="User Image">
+              <span class="hidden-xs"><?php echo $theatre['name'];?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="admin.png" class="img-circle" alt="User Image">
+                <img src="cinema-512.png" class="img-circle" alt="User Image">
 
                 <p>
-                  
+                  Theatre Assistance
                 </p>
               </li>
               <li class="user-footer">
@@ -101,10 +103,10 @@ include('../../config.php');
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="admin.png" class="img-circle" alt="User Image">
+          <img src="cinema-512.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Admin</p>
+          <p><?php echo $theatre['name'];?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -122,22 +124,53 @@ include('../../config.php');
         </li>
         
           <li class="treeview">
-          <a href="add_theatre.php">
-            <i class="fa fa-plus"></i> <span>Add Theatre</span>
+          <a href="add_movie.php">
+            <i class="fa fa-plus"></i> <span>Add Movie</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
         </li>
         <li class="treeview">
-          <a href="add_movie_news.php">
-            <i class="fa fa-plus"></i> <span>Add Movie News</span>
+          <a href="add_show.php">
+            <i class="fa fa-ticket"></i> <span>Add Show</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
         </li>
-        
+        <li class="treeview">
+          <a href="todays_shows.php">
+            <i class="fa fa-calendar"></i> <span>Todays Shows</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="tickets.php">
+            <i class="fa fa-film"></i> <span>Todays Bookings</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="view_shows.php">
+            <i class="fa fa-eye"></i> <span>View Show</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="add_theatre_2.php">
+            <i class="fa fa-film"></i> <span>Theatre Details</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
         
       </ul>
     </section>

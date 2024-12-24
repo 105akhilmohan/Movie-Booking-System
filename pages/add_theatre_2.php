@@ -12,8 +12,7 @@ include('header.php');
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.php"><i class="fa fa-home"></i> Home</a></li>
-        <li><a href="add_theater.php">Add Theater</a></li>
-        <li class="active">Add Theater Details</li>
+        <li class="active">Theater Details</li>
       </ol>
     </section>
 
@@ -27,7 +26,7 @@ include('header.php');
             </div>
         <div class="box-body">
           <?php
-            $th=mysqli_query($con,"select * from tbl_theatre where id='".$_GET['id']."'");
+            $th=mysqli_query($con,"select * from tbl_theatre where id='".$_SESSION['theatre']."'");
             $theatre=mysqli_fetch_array($th);
           ?>
             <table class="table table-bordered table-hover">
@@ -61,7 +60,7 @@ include('header.php');
             </div>
         <div class="box-body" id="screendtls">
           <?php
-            $sr=mysqli_query($con,"select * from tbl_screens where t_id='".$_GET['id']."'");
+            $sr=mysqli_query($con,"select * from tbl_screens where t_id='".$_SESSION['theatre']."'");
             if(mysqli_num_rows($sr))
             {
           ?>
@@ -76,6 +75,7 @@ include('header.php');
                 $sl=1;
                 while($screen=mysqli_fetch_array($sr))
                 {
+                  $ab=$screen['screen_id'];
                   ?>
                   <tr>
                     <td><?php echo $sl;?></td>
@@ -90,7 +90,49 @@ include('header.php');
                     else
                     {echo "No Show Time Added";}
                     ?></td>
-                    <td class="text-right"><button data-toggle="modal" data-id="<?php echo $screen['screen_id'];?>" data-target="#view-modal2" id="getUser2" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> Add Show Times</button></td>
+                    <td class="text-right"><button data-toggle="modal" data-id="<?php echo $screen['screen_id'];?>" data-target="#view-modal2" id="getUser2" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> Add Show Times</button>
+                  
+                    <a href="del.php?id=<?php echo $ab;?>"><button   class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete Show Times</button></a>
+                  </td>
+
+                  <div id="view-modal3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+             <div class="modal-dialog"> 
+                  <div class="modal-content"> 
+                  
+                       <div class="modal-header"> 
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">
+                            	<i class="fa fa-plus"></i> Delete Show Time
+                            </h4> 
+                       </div> 
+                       <div class="modal-body"> 
+                           <div class="form-group">
+                       	     <label class="control-label">Select Show</label>
+                       	     <select name="s_name" id="s_name" class="form-control">
+                       	       <option value="0">Select Show</option>
+                       	       <option>Noon</option>
+                       	       <option>Matinee</option>
+                       	       <option>First</option>
+                       	       <option>Second</option>
+                       	       <option><?php echo $screen['screen_id'];?></option>
+                       	     </select>
+                       	   </div>
+                       	   <div class="form-group">
+                       	     <label class="control-label">Show Starting Time</label>
+                       	     <input type="time" id="s_time" class="form-control"/>
+                       	   </div>
+                       	   <div class="form-group">
+                            <button class="btn btn-success" id="savetime">Save</button>
+                          </div>
+                        </div> 
+                        <div class="modal-footer"> 
+                             
+                        </div> 
+                        
+                 </div> 
+              </div>
+       </div>
+                 
                   </tr>
                   <?php
                   $sl++;
@@ -174,6 +216,7 @@ include('header.php');
                  </div> 
               </div>
        </div>
+       
     </section>
     <!-- /.content -->
   </div>
@@ -187,7 +230,7 @@ include('footer.php');
     $.ajax({
 			url: 'get_screen_dtls.php',
 			type: 'POST',
-			data: 'id='+<?php echo $_GET['id'];?>,
+			data: 'id='+<?php echo $_SESSION['theatre'];?>,
 			dataType: 'html'
 		})
 		.done(function(data){
@@ -210,7 +253,7 @@ include('footer.php');
   		$.ajax({
   			url: 'add_screen_form.php',
   			type: 'POST',
-  			data: 'id='+<?php echo $_GET['id'];?>,
+  			data: 'id='+<?php echo $_SESSION['theatre'];?>,
   			dataType: 'html'
   		})
   		.done(function(data){
@@ -264,7 +307,7 @@ $(document).on('click', '#savescreen', function(){
     $.ajax({
   			url: 'save_screen.php',
   			type: 'POST',
-  			data: 'theatre='+<?php echo $_GET['id'];?>+'&name='+name+'&charge='+charge+'&seats='+seats,
+  			data: 'theatre='+<?php echo $_SESSION['theatre'];?>+'&name='+name+'&charge='+charge+'&seats='+seats,
   			dataType: 'html'
   		})
   		.done(function(data){
